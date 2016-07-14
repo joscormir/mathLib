@@ -6,8 +6,8 @@ class Matrix {
 	
 public:
 	
-	Matrix(const T_& _rows,const T_& _columns); //Default fill with zeroes. 
-	Matrix(const T_& _size); 
+	Matrix(const unsigned int& _rows,const unsigned int& _columns); //Default fill with zeroes. 
+	Matrix(const unsigned int& _size); 
 	Matrix(const Matrix& _mat);//Copy constructor
 	~Matrix();
 
@@ -42,23 +42,23 @@ public:
 	Matrix zero(const T_& _size);
 
 	Matrix identity(const T_& _size);
-	
+	T_**ptrMat = nullptr;
 private:
-	T_ rows, columns, size;
-	T_ **ptrMat = nullptr;
+	unsigned int rows, columns, size;
+	//T_ **ptrMat = nullptr;
 };
 
 //--------------------------------------------------------------------
 //Methods implementation
 //--------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>::Matrix(const T_& _rows, const T_& _columns) : rows(_rows), columns(_columns) {
+Matrix<T_>::Matrix(const unsigned int& _rows, const unsigned int& _columns) : rows(_rows), columns(_columns) {
 	ptrMat = new T_*[rows];
-	for (auto i = 0; i < rows; ++i) {
+	for (unsigned int i = 0; i < rows; ++i) {
 		ptrMat[i] = new T_[columns];
 	}
-	for (auto i = 0; i < rows; ++i) {
-		for (auto j = 0; j < columns; ++j) {
+	for (unsigned int i = 0; i < rows; ++i) {
+		for (unsigned int j = 0; j < columns; ++j) {
 			ptrMat[i][j] = 0; //initialized by default with 0s
 		}
 	}
@@ -66,11 +66,11 @@ Matrix<T_>::Matrix(const T_& _rows, const T_& _columns) : rows(_rows), columns(_
 
 //--------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>::Matrix(const T_& _size) {
+Matrix<T_>::Matrix(const unsigned int& _size) {
 	rows = _size;
 	columns = _size;
 	ptrMat = new T_*[rows];
-	for (auto i = 0; i < rows; ++i) {
+	for (unsigned int i = 0; i < rows; ++i) {
 		ptrMat[i] = new T_[columns];
 	}
 }
@@ -78,7 +78,7 @@ Matrix<T_>::Matrix(const T_& _size) {
 //--------------------------------------------------------------------
 template<typename T_>
 Matrix<T_>::~Matrix() {
-	for (auto i = 0; i < rows; ++i) {
+	for (unsigned int i = 0; i < rows; ++i) {
 		delete[] ptrMat[i];
 	}
 	delete[] ptrMat;
@@ -89,11 +89,11 @@ template<typename T_>
 Matrix<T_>::Matrix(const Matrix& _mat) {
 	//copy constructor
 	ptrMat = new T_*[_mat.rows];
-	for (auto i = 0; i < _mat.rows; ++i) {
+	for (unsigned int i = 0; i < _mat.rows; ++i) {
 		ptrMat[i] = new T_[_mat.columns];
 	}
-	for (auto i = 0; i < _mat.rows; ++i) {
-		for (auto j = 0; j < _mat.columns; ++j) {
+	for (unsigned int i = 0; i < _mat.rows; ++i) {
+		for (unsigned int j = 0; j < _mat.columns; ++j) {
 			ptrMat[i][j] = _mat.ptrMat[i][j];
 		}
 	}
