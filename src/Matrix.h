@@ -120,6 +120,18 @@ T_& Matrix<T_>::operator()(const unsigned int& _row , const unsigned int& _colum
 
 //---------------------------------------------------------------------
 template<typename T_>
+Matrix<T_>& Matrix<T_>::operator=	(const Matrix& _equalMat) {
+	assert(((this->columns == _equalMat.columns) || (this->rows == _equalMat.rows)) && (this->size == _equalMat.size));
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
+		ptrMat[i][j] = _equalMat.ptrMat[i][j];
+		}
+	}
+	return *this;
+}
+
+//---------------------------------------------------------------------
+template<typename T_>
 Matrix<T_>& Matrix<T_>::operator+(const Matrix& _addMat) {
 	assert((this->columns == _addMat.columns) || (this->rows == _addMat.rows) && (this->size == _addMat.size));
 	for (auto i = 0; i < rows; ++i) {
@@ -130,5 +142,6 @@ Matrix<T_>& Matrix<T_>::operator+(const Matrix& _addMat) {
 	return *this;
 }
 
+//---------------------------------------------------------------------
 
 #endif //_MATRIX_OP_
