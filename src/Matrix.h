@@ -21,10 +21,10 @@ public:
 	Matrix& operator+	(const Matrix& _addMat);
 	Matrix& operator+	(const T_& _scalar);	//add scalar
 
-	Matrix& operator-	(const Matrix& _Mat);
+	Matrix& operator-	(const Matrix& _minusMat);
 	Matrix& operator-	(const T_& _scalar);	//subtract by scalar
 
-	Matrix& operator*	(const Matrix& _secondMat);
+	Matrix& operator*	(const Matrix& _multMat);
 	Matrix& operator*	(const T_& _scalar);	//Multiply by scalar
 	
 	Matrix& operator/	(const Matrix& _divideMat);
@@ -155,10 +155,28 @@ Matrix<T_>& Matrix<T_>::operator+	(const T_& _scalar) {
 
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator-	(const Matrix& _Mat) {}
+Matrix<T_>& Matrix<T_>::operator-	(const Matrix& _minusMat) {
+	assert((this->columns == _minusMat.columns) || (this->rows == _minusMat.rows) && (this->size == _minusMat.size));
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
+			ptrMat[i][j] -= _minusMat.ptrMat[i][j];
+		}
+	}
+	return *this;
+
+}
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator-	(const T_& _scalar) {}
+Matrix<T_>& Matrix<T_>::operator-	(const T_& _scalar) {
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
+			ptrMat[i][j] -= _scalar;
+		}
+	}
+	return *this;
+
+}
+
 //---------------------------------------------------------------------
 template<typename T_>
 Matrix<T_>& Matrix<T_>::operator*	(const Matrix& _secondMat) {}
