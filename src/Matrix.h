@@ -1,6 +1,6 @@
 #ifndef _MATRIX_OP_
 #define _MATRIX_OP_
-
+#include <assert.h>
 template<typename T_>
 class Matrix {
 	
@@ -117,5 +117,18 @@ template<typename T_>
 T_& Matrix<T_>::operator()(const unsigned int& _row , const unsigned int& _column) {
 	return ptrMat[_row][_column];
 }
+
+//---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator+(const Matrix& _addMat) {
+	assert((this->columns == _addMat.columns) || (this->rows == _addMat.rows) && (this->size == _addMat.size));
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
+			ptrMat[i][j] += _addMat.ptrMat[i][j];
+		}
+	}
+	return *this;
+}
+
 
 #endif //_MATRIX_OP_
