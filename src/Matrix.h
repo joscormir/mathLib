@@ -143,5 +143,33 @@ Matrix<T_>& Matrix<T_>::operator+(const Matrix& _addMat) {
 }
 
 //---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator+	(const T_& _scalar) {
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
+			ptrMat[i][j] += _scalar;
+		}
+	}
+	return *this;
+}
+
+//---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator-	(const Matrix& _Mat) {}
+//---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator-	(const T_& _scalar) {}
+//---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator*	(const Matrix& _secondMat) {}
+//---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator*	(const T_& _scalar) {}
+//---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator/	(const Matrix& _divideMat) {}
+//---------------------------------------------------------------------
+template<typename T_>
+Matrix<T_>& Matrix<T_>::operator/	(const T_& _scalar) {}
 
 #endif //_MATRIX_OP_
