@@ -5,12 +5,11 @@ using namespace std;
 int main() {
 	
 	Matrix<float> mat(3,3);
-	for (auto i = 0; i < 3; ++i) {
-		for (auto j = 0; j < 3; ++j) {
-			cout << mat.ptrMat[i][j];
-			if (j == 2)
-				cout << endl;
-		}
-	}
+	cout << mat(2, 1) << endl;
+
 	system("PAUSE");
+}
+
+void birthDate(int _day, int _month, int _year) {
+	std::cout << "Your birthday is: " << _day << "/" << _month << "/" << _year << std::endl;
 }

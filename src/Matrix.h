@@ -12,9 +12,10 @@ public:
 	~Matrix();
 
 	//Fill method
-	void fill(const T_ _values[]);
+	void fill(const T_& _values);
 
 	//Redefine operators to asign operations
+	T_&		operator()	(const unsigned int& _row, const unsigned int& _column);
 	Matrix& operator=	(const Matrix& _equalMat);
 
 	Matrix& operator+	(const Matrix& _addMat);
@@ -42,10 +43,10 @@ public:
 	Matrix zero(const T_& _size);
 
 	Matrix identity(const T_& _size);
-	T_**ptrMat = nullptr;
+	
 private:
 	unsigned int rows, columns, size;
-	//T_ **ptrMat = nullptr;
+	T_ **ptrMat = nullptr;
 };
 
 //--------------------------------------------------------------------
@@ -59,7 +60,7 @@ Matrix<T_>::Matrix(const unsigned int& _rows, const unsigned int& _columns) : ro
 	}
 	for (unsigned int i = 0; i < rows; ++i) {
 		for (unsigned int j = 0; j < columns; ++j) {
-			ptrMat[i][j] = 0; //initialized by default with 0s
+			ptrMat[i][j] = (T_)0; //initialized by default with 0s
 		}
 	}
 }
@@ -101,5 +102,20 @@ Matrix<T_>::Matrix(const Matrix& _mat) {
 	columns = _mat.columns;
 }
 
+//---------------------------------------------------------------------
+template<typename T_>
+void Matrix<T_>::fill(const T_& _values) {
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
+			ptrMat[i][j] = _values[i*rows + j];
+		}
+	}
+}
+
+//---------------------------------------------------------------------
+template<typename T_>
+T_& Matrix<T_>::operator()(const unsigned int& _row , const unsigned int& _column) {
+	return ptrMat[_row][_column];
+}
 
 #endif //_MATRIX_OP_
