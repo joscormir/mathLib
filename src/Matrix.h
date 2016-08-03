@@ -174,15 +174,33 @@ Matrix<T_>& Matrix<T_>::operator-	(const T_& _scalar) {
 		}
 	}
 	return *this;
-
 }
 
 //---------------------------------------------------------------------
-template<typename T_>
-Matrix<T_>& Matrix<T_>::operator*	(const Matrix& _secondMat) {}
+template<typename T_>//666TODO
+Matrix<T_>& Matrix<T_>::operator*	(const Matrix& _multMat) {
+	assert(this->columns == _multMat.rows);
+	T_ aux = 0;
+	for (auto i = 0; i < mat.rows; ++i) {
+		for (auto j = 0; j < mat.columns; ++j) {
+			aux+= this->ptrMat[i][j]*_minusMat.ptrMat[i][j];
+		}
+		
+	}
+	return *this;
+
+}
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator*	(const T_& _scalar) {}
+Matrix<T_>& Matrix<T_>::operator*	(const T_& _scalar) {
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
+			ptrMat[i][j] *= _scalar;
+		}
+	}
+	return *this;
+}
+
 //---------------------------------------------------------------------
 template<typename T_>
 Matrix<T_>& Matrix<T_>::operator/	(const Matrix& _divideMat) {}
