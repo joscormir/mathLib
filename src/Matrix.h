@@ -26,8 +26,7 @@ public:
 
 	Matrix& operator*	(const Matrix& _multMat);
 	Matrix& operator*	(const T_& _scalar);	//Multiply by scalar
-	
-	Matrix& operator/	(const Matrix& _divideMat);
+
 	Matrix& operator/	(const T_& _scalar);	//Divide by scalar
 
 	//Particular Matrix operations
@@ -55,11 +54,11 @@ private:
 template<typename T_>
 Matrix<T_>::Matrix(const unsigned int& _rows, const unsigned int& _columns) : rows(_rows), columns(_columns) {
 	ptrMat = new T_*[rows];
-	for (unsigned int i = 0; i < rows; ++i) {
+	for (auto i = 0; i < rows; ++i) {
 		ptrMat[i] = new T_[columns];
 	}
-	for (unsigned int i = 0; i < rows; ++i) {
-		for (unsigned int j = 0; j < columns; ++j) {
+	for (auto i = 0; i < rows; ++i) {
+		for (auto j = 0; j < columns; ++j) {
 			ptrMat[i][j] = (T_)0; //initialized by default with 0s
 		}
 	}
@@ -90,11 +89,11 @@ template<typename T_>
 Matrix<T_>::Matrix(const Matrix& _mat) {
 	//copy constructor
 	ptrMat = new T_*[_mat.rows];
-	for (unsigned int i = 0; i < _mat.rows; ++i) {
+	for (auto i = 0; i < _mat.rows; ++i) {
 		ptrMat[i] = new T_[_mat.columns];
 	}
-	for (unsigned int i = 0; i < _mat.rows; ++i) {
-		for (unsigned int j = 0; j < _mat.columns; ++j) {
+	for (auto i = 0; i < _mat.rows; ++i) {
+		for (auto j = 0; j < _mat.columns; ++j) {
 			ptrMat[i][j] = _mat.ptrMat[i][j];
 		}
 	}
@@ -105,6 +104,7 @@ Matrix<T_>::Matrix(const Matrix& _mat) {
 //---------------------------------------------------------------------
 template<typename T_>
 void Matrix<T_>::fill(const T_& _values) {
+    static_assert(_values == rows*columns);
 	for (auto i = 0; i < rows; ++i) {
 		for (auto j = 0; j < columns; ++j) {
 			ptrMat[i][j] = _values[i*rows + j];
@@ -120,66 +120,68 @@ T_& Matrix<T_>::operator()(const unsigned int& _row , const unsigned int& _colum
 
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator=	(const Matrix& _equalMat) {
-	assert(((this->columns == _equalMat.columns) || (this->rows == _equalMat.rows)) && (this->size == _equalMat.size));
+Matrix<T_>& Matrix<T_>::operator=(const Matrix& _equalMat){
+    static_assert((((this->columns == _equalMat.columns) || (this->rows == _equalMat.rows)) && (this->size == _equalMat.size)));
 	for (auto i = 0; i < rows; ++i) {
 		for (auto j = 0; j < columns; ++j) {
 		ptrMat[i][j] = _equalMat.ptrMat[i][j];
 		}
 	}
-	return *this;
+	return (*this);
 }
 
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator+(const Matrix& _addMat) {
-	assert((this->columns == _addMat.columns) || (this->rows == _addMat.rows) && (this->size == _addMat.size));
+Matrix<T_>& Matrix<T_>::operator+(const Matrix& _addMat){
+	static_assert((this->columns == _addMat.columns) || (this->rows == _addMat.rows) && (this->size == _addMat.size));
 	for (auto i = 0; i < rows; ++i) {
 		for (auto j = 0; j < columns; ++j) {
 			ptrMat[i][j] += _addMat.ptrMat[i][j];
 		}
 	}
-	return *this;
+	return (*this);
 }
 
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator+	(const T_& _scalar) {
-	for (auto i = 0; i < rows; ++i) {
+Matrix<T_>& Matrix<T_>::operator+(const T_& _scalar){
+    //666 TODO check if _scalar is same type as Matrix
+    for (auto i = 0; i < rows; ++i) {
 		for (auto j = 0; j < columns; ++j) {
 			ptrMat[i][j] += _scalar;
 		}
 	}
-	return *this;
+	return (*this);
 }
 
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator-	(const Matrix& _minusMat) {
-	assert((this->columns == _minusMat.columns) || (this->rows == _minusMat.rows) && (this->size == _minusMat.size));
+Matrix<T_>& Matrix<T_>::operator-(const Matrix& _minusMat) {
+    static_assert((this->columns == _minusMat.columns) || (this->rows == _minusMat.rows) && (this->size == _minusMat.size));
 	for (auto i = 0; i < rows; ++i) {
 		for (auto j = 0; j < columns; ++j) {
 			ptrMat[i][j] -= _minusMat.ptrMat[i][j];
 		}
 	}
-	return *this;
+	return (*this);
 
 }
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator-	(const T_& _scalar) {
-	for (auto i = 0; i < rows; ++i) {
+Matrix<T_>& Matrix<T_>::operator-(const T_& _scalar) {
+    //666 TODO check if _scalar is same type as Matrix
+    for (auto i = 0; i < rows; ++i) {
 		for (auto j = 0; j < columns; ++j) {
 			ptrMat[i][j] -= _scalar;
 		}
 	}
-	return *this;
+	return (*this);
 }
 
 //---------------------------------------------------------------------
 template<typename T_>//666TODO
-Matrix<T_>& Matrix<T_>::operator*	(const Matrix& _multMat) {
-	assert(this->columns == _multMat.rows);
+Matrix<T_>& Matrix<T_>::operator*(const Matrix& _multMat) {
+	static_assert(this->columns == _multMat.rows);
 	T_ aux = 0;
 	for (auto i = 0; i < mat.rows; ++i) {
 		for (auto j = 0; j < mat.columns; ++j) {
@@ -192,20 +194,94 @@ Matrix<T_>& Matrix<T_>::operator*	(const Matrix& _multMat) {
 }
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator*	(const T_& _scalar) {
+Matrix<T_>& Matrix<T_>::operator*(const T_& _scalar) {
 	for (auto i = 0; i < rows; ++i) {
 		for (auto j = 0; j < columns; ++j) {
 			ptrMat[i][j] *= _scalar;
 		}
 	}
-	return *this;
+	return (*this);
 }
 
 //---------------------------------------------------------------------
 template<typename T_>
-Matrix<T_>& Matrix<T_>::operator/	(const Matrix& _divideMat) {}
+Matrix<T_>& Matrix<T_>::operator/(const T_& _scalar) {
+    for(auto i = 0; i < rows; ++i){
+        for(auto j = 0; j < columns; ++j){
+            ptrMat[i][j] /=_scalar;
+        }
+    }
+    return (*this);
+}
+
 //---------------------------------------------------------------------
-template<typename T_>
-Matrix<T_>& Matrix<T_>::operator/	(const T_& _scalar) {}
+template<typename T_ >
+Matrix<T_> Matrix<T_>::ones(const T_& _size) {
+    rows = _size;
+    columns =_size;
+    ptrMat = new T_*[rows];
+    for (auto i = 0; i < rows; ++i) {
+        ptrMat[i] = new T_[columns];
+    }
+    for (auto i = 0; i < rows; ++i) {
+        for (auto j = 0; j < columns; ++j) {
+            ptrMat[i][j] = (T_)1; //initialized by default with 0s
+        }
+    }
+}
+
+//---------------------------------------------------------------------
+template<typename T_ >
+Matrix<T_> Matrix<T_>::ones(const T_& _rows, const T_& _columns){
+    rows = _rows;
+    columns =_columns;
+    ptrMat = new T_*[rows];
+    for (auto i = 0; i < rows; ++i) {
+        ptrMat[i] = new T_[columns];
+    }
+    for (auto i = 0; i < rows; ++i) {
+        for (auto j = 0; j < columns; ++j) {
+            ptrMat[i][j] = (T_)1; //initialized by default with 0s
+        }
+    }
+}
+
+//---------------------------------------------------------------------
+template<typename T_ >
+Matrix<T_> Matrix<T_>::zero(const T_& _rows, const T_& _columns){
+    rows = _rows;
+    columns =_columns;
+    ptrMat = new T_*[rows];
+    for (auto i = 0; i < rows; ++i) {
+        ptrMat[i] = new T_[columns];
+    }
+    for (auto i = 0; i < rows; ++i) {
+        for (auto j = 0; j < columns; ++j) {
+            ptrMat[i][j] = (T_)0; //initialized by default with 1s
+        }
+    }
+}
+
+//---------------------------------------------------------------------
+template<typename T_ >
+Matrix<T_> Matrix<T_>::zero(const T_& _size) {
+    rows = _size;
+    columns = _size;
+    ptrMat = new T_ *[rows];
+    for (auto i = 0; i < rows; ++i) {
+        ptrMat[i] = new T_[columns];
+    }
+    for (auto i = 0; i < rows; ++i) {
+        for (auto j = 0; j < columns; ++j) {
+            ptrMat[i][j] = (T_)0; //initialized by default with 1s
+        }
+    }
+    
+}
+//---------------------------------------------------------------------
+template<typename T_ >
+Matrix<T_ >Matrix<T_>::identity(const T_& _size){
+
+}
 
 #endif //_MATRIX_OP_
