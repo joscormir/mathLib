@@ -1,50 +1,31 @@
 #include <iostream>
 #include "Matrix.h"
 
-using namespace std;
-
-class Number{
-
-	virtual void getNumber() = 0;
-	protected:
-		int n;
-};
-
-class Natural : Number{
-	public:
-		void getNumber(){
-			std::cout << "Soy un numero natural: " << num << std::endl;
-		};
-
-	private:
-		unsigned int num;
-};
-
-class Complex : Number{
-	public:
-		Complex():real(0),img(0){};
-		Complex(double _real, double _img): real(_real),img(_img){};
-
-		~Complex(){
-			delete ptr;
-		};
-		void getNumber(){
-			std::cout << "Soy un complejo con aprte real:";
-		};
-	private:
-		Complex* ptr = new Complex();
-		double real;
-		double img;
-};
 int main() {
-	
-	Matrix<float> mat(3,3);
-	cout << mat(2, 1) << endl;
-	Complex numComp1;
-	Complex numcomp2(1.2,2.3);
-	return 0;
-}
+	double values[9] = {1,2,3,4,5,6,7,8,9};
+	std::cout << sizeof(values)/sizeof(double) <<std::endl;
+	std::cout << ((3*3) == (sizeof(values) / sizeof(double))) << std::endl;
 
-void birthDate(int _day, int _month, int _year) {
-	std::cout << "Your birthday is: " << _day << "/" << _month << "/" << _year << std::endl;
+	Matrix<double> mat(3, values);
+	mat.represent();
+	Matrix<double> matSum(3);
+	Matrix<double> matS(3);
+	matS = mat *4;
+	matS.represent();
+
+	Matrix<double> mat1(4);
+	mat1.one();
+
+	mat1.represent();
+	
+	mat1.zero();
+
+	mat1.represent();
+	
+	Matrix <double> mat2(4, 3);
+	//mat2.identity();
+	mat2.represent();
+	mat1.identity();
+	mat1.represent();
+	system("PAUSE");
 }
